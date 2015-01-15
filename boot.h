@@ -99,8 +99,7 @@ static inline unsigned short get_es(void)
 }
 
 void initregs(struct biosregs *ireg);
-void intcall(unsigned char intno, const struct biosregs *ireg,
-		struct biosregs *oreg);
+void intcall(int intno, const struct biosregs *ireg, struct biosregs *oreg);
 
 int e820_detect(struct boot_params *params);
 void e820_show(const struct boot_params *params);

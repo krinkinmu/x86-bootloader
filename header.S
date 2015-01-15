@@ -14,19 +14,20 @@ load_address:
 drive_number:
 	.byte	0x00		/* boot drive number */
 setup_sectors:
-	.byte	0x03		/* bootloader size in 512 byte blocks */
+	.byte	0x06		/* bootloader size in 512 byte blocks */
 
 real_start:
-	xorw	%ax, %ax
+	xorl	%eax, %eax
 	movw	%ax, %ds
 	movw	%ax, %es
 	movw	%ax, %fs
 	movw	%ax, %gs
 	movw	%ax, %ss
-	movw	%ax, %sp
+	movl	%eax, %esp
 
 	movb	%dl, drive_number
 	movb	setup_sectors, %al
+	dec	%al
 
 	/*
 	 * dl - drive number
@@ -49,11 +50,8 @@ real_start:
 	movw	$0x7E00, %bx
 	int	$0x13
 
-	movl	$boot_params, %eax
+	pushl	$boot_params
 	calll	setup
-
-loop:
-	jmp	loop
 
 	.global die
 	.type die, @function

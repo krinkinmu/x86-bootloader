@@ -13,10 +13,24 @@
  * touching registers they shouldn't be.
  */
 
+/*
+ * Change to use stack instead of registers for function arguments
+ */
+
 	.code16
 	.globl	intcall
 	.type	intcall, @function
 intcall:
+	pushl	%ebp
+	movl	%esp, %ebp
+	pushl	%eax
+	pushl	%edx
+	pushl	%ecx
+
+	movl	0x10(%ebp), %ecx
+	movl	0x0c(%ebp), %edx
+	movl	0x08(%ebp), %eax
+
 	/* Self-modify the INT instruction.  Ugly, but works. */
 	cmpb	%al, 3f
 	je	1f
@@ -77,5 +91,10 @@ intcall:
 	popw	%gs
 	popw	%fs
 	popfl
+
+	popl	%ecx
+	popl	%edx
+	popl	%eax
+	popl	%ebp
 	retl
 	.size	intcall, .-intcall

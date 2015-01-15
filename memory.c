@@ -21,7 +21,7 @@ int e820_detect(struct boot_params *params)
 	iregs.ax = 0xe820;
 	iregs.cx = sizeof(buf);
 	iregs.edx = SMAP;
-	iregs.di = (unsigned short)&buf;
+	iregs.di = (unsigned long)&buf;
 
 	do {
 		intcall(0x15, &iregs, &oregs);
@@ -36,7 +36,7 @@ int e820_detect(struct boot_params *params)
 
 		iregs.ebx = oregs.ebx;
 		entries[count++] = buf;
-	} while (iregs.ebx && count < size);
+	} while (oregs.ebx && count < size);
 
 	params->e820_entries = count;
 	return count;
