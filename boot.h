@@ -15,8 +15,8 @@ struct boot_header {
 } __attribute__((packed));
 
 struct e820entry {
-	unsigned long long addr;
-	unsigned long long size;
+	unsigned long addrl, addrh;
+	unsigned long sizel, sizeh;
 	unsigned long type;
 	unsigned long unused;
 } __attribute__((packed));
@@ -102,6 +102,7 @@ void initregs(struct biosregs *ireg);
 void intcall(unsigned char intno, const struct biosregs *ireg,
 		struct biosregs *oreg);
 
-int detect_memory(struct boot_params *params);
+int e820_detect(struct boot_params *params);
+void e820_show(const struct boot_params *params);
 
 #endif /*__BOOT_H__*/

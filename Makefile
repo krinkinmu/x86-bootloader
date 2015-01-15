@@ -14,7 +14,8 @@ OBJS = \
 	string.o \
 	bioscall.o \
 	regs.o \
-	memory.o
+	memory.o \
+	printf.o
 
 image: bootloader.bin
 	dd if=/dev/zero of=image bs=512c count=4
