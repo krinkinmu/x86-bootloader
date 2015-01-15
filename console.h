@@ -4,6 +4,7 @@
 void console_init(void);
 
 void putchar(int ch);
-void puts(char const *str);
+void puts_nn(const char *str);
+void puts(const char *str);
 
 #endif /*__CONSOLE_H__*/

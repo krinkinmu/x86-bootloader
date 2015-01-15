@@ -32,9 +32,14 @@ void putchar(int ch)
 	bios_putchar(ch);
 }
 
-void puts(char const *str)
+void puts_nn(const char *str)
 {
 	while (*str)
 		putchar(*str++);
+}
+
+void puts(const char *str)
+{
+	puts_nn(str);
 	putchar('\n');
 }
