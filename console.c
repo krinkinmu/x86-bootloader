@@ -1,9 +1,13 @@
+#include "boot.h"
+
 static void bios_set_video_mode(unsigned char mode)
 {
-	asm volatile ("xorw %%ax, %%ax\n"
-		      "movb %0,   %%al\n"
-		      "int  $0x10"
-		      : : "q"(mode) : "%ax");
+	struct biosregs iregs;
+
+	initregs(&iregs);
+	iregs.ah = 0;
+	iregs.al = mode;
+	intcall(0x10, &iregs, 0);
 }
 
 void console_init(void)
@@ -11,10 +15,14 @@ void console_init(void)
 
 static void bios_putchar(int ch)
 {
-	asm volatile ("movb $0x0e, %%ah\n"
-		      "movb %0,    %%al\n"
-		      "int  $0x10"
-		      : : "q"((unsigned char)ch) : "%ax");
+	struct biosregs iregs;
+
+	initregs(&iregs);
+	iregs.bx = 0x0007;
+	iregs.cx = 0x0001;
+	iregs.ah = 0x0e;
+	iregs.al = ch;
+	intcall(0x10, &iregs, 0);
 }
 
 void putchar(int ch)
