@@ -10,7 +10,11 @@ OBJS = \
 	header.o \
 	setup.o \
 	console.o \
-	utils.o
+	utils.o \
+	string.o \
+	bioscall.o \
+	regs.o \
+	memory.o
 
 image: bootloader.bin
 	dd if=/dev/zero of=image bs=512c count=4
