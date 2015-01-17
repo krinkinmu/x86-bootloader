@@ -16,6 +16,15 @@ drive_number:
 setup_sectors:
 	.byte	0x06		/* bootloader size in 512 byte blocks */
 
+	.align 4
+big_real_mode_gdt:
+	.quad 0x0000000000000000
+	.quad 0x00cf92000000ffff
+
+big_real_mode_gdt_descr:
+	.word (big_real_mode_gdt_descr - big_real_mode_gdt - 1)
+	.long big_real_mode_gdt
+
 real_start:
 	xorl	%eax, %eax
 	movw	%ax, %ds
@@ -50,6 +59,7 @@ real_start:
 	movw	$0x7E00, %bx
 	int	$0x13
 
+	calll	enter_big_real_mode
 	pushl	$boot_params
 	calll	setup
 
@@ -59,3 +69,36 @@ die:
 	hlt
 	jmp	die
 	.size die, .-die
+
+enter_big_real_mode:
+	cli
+	pushw	%ds
+	pushw	%es
+	pushw	%gs
+	pushw	%fs
+	pushw	%ss
+
+	lgdt	big_real_mode_gdt_descr
+	movl	%cr0, %eax
+	orl	$0x01, %eax
+	movl	%eax, %cr0
+	jmp	1f
+1:
+	movw	$0x08, %ax
+	movw	%ax, %ds
+	movw	%ax, %es
+	movw	%ax, %gs
+	movw	%ax, %fs
+	movw	%ax, %ss
+
+	movl	%cr0, %eax
+	andl	$0xFE, %eax
+	movl	%eax, %cr0
+
+	popw	%ss
+	popw	%fs
+	popw	%gs
+	popw	%es
+	popw	%ds
+	sti
+	retl
