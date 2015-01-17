@@ -9,11 +9,8 @@ void setup(struct boot_header *header)
 	puts("Booting...");
 	params.boot_header = *header;
 
-	if (!e820_detect(&params)) {
-		puts("Failed to detect memory... Dying!");
-		die();
-	}
+	e820_detect(&params);
 	e820_show(&params);
 
-	while (1);
+	enable_a20();
 }
