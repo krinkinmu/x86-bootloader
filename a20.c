@@ -6,6 +6,11 @@ static int a20_enabled(void)
 	/**
  	 * We can use any address above 1Mb that doesn't point to this function
 	 * stack, we use first bootloader sector (0x7c00 and 0x107c00).
+	 *
+	 * With clang it is possible to use 32 bit address in RM, but gcc has
+	 * lack of native RM support and truncates all 16+ bit immediates in
+	 * memory access instructions to 16 bit values, so we have to use
+	 * functions like set_{fs|gs}, readl_{fs|gs} and writel_{fs|gs}.
 	 **/
 	const unsigned short low_off = 0x7c00;
 	const unsigned short high_off = 0x7c10; /*0xffff0 + 0x7c10 = 0x107c00*/
