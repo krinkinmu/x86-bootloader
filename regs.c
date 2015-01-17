@@ -7,6 +7,4 @@ void initregs(struct biosregs *regs)
 	regs->eflags |= X86_CF_FLAG;
 	regs->ds = get_ds();
 	regs->es = get_es();
-	regs->fs = get_fs();
-	regs->gs = get_gs();
 }
