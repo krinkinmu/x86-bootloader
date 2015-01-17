@@ -15,6 +15,8 @@ drive_number:
 	.byte	0x00		/* boot drive number */
 setup_sectors:
 	.byte	0x06		/* bootloader size in 512 byte blocks */
+_padding:
+	.short	0x0000
 
 	.align 4
 big_real_mode_gdt:
@@ -76,7 +78,6 @@ enter_big_real_mode:
 	pushw	%es
 	pushw	%gs
 	pushw	%fs
-	pushw	%ss
 
 	lgdt	big_real_mode_gdt_descr
 	movl	%cr0, %eax
@@ -89,13 +90,11 @@ enter_big_real_mode:
 	movw	%ax, %es
 	movw	%ax, %gs
 	movw	%ax, %fs
-	movw	%ax, %ss
 
 	movl	%cr0, %eax
 	andl	$0xFE, %eax
 	movl	%eax, %cr0
 
-	popw	%ss
 	popw	%fs
 	popw	%gs
 	popw	%es
