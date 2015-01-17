@@ -64,13 +64,9 @@ real_start:
 	calll	enter_big_real_mode
 	pushl	$boot_params
 	calll	setup
-
-	.global die
-	.type die, @function
-die:
+1:
 	hlt
-	jmp	die
-	.size die, .-die
+	jmp	1b
 
 enter_big_real_mode:
 	cli
