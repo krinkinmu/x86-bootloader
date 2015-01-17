@@ -12,6 +12,7 @@ struct boot_header {
 	unsigned long image_addr;
 	unsigned char boot_drive;
 	unsigned char boot_image_size;
+	unsigned short _padding;
 } __attribute__((packed));
 
 struct e820entry {
@@ -22,8 +23,10 @@ struct e820entry {
 } __attribute__((packed));
 
 struct boot_params {
+	struct boot_header boot_header;
 	struct e820entry e820_mm[E820_MAX_MAP_SIZE];
 	unsigned char e820_entries;
+	unsigned char _padding[3];
 } __attribute__((packed));
 
 struct biosregs {
