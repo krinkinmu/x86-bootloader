@@ -8,9 +8,8 @@ struct boot_header {
 	unsigned long magic;
 	unsigned long image_size;
 	unsigned long image_addr;
-	unsigned char boot_drive;
-	unsigned char boot_image_size;
-	unsigned short _padding;
+	unsigned long boot_drive;
+	unsigned long boot_image_size;
 } __attribute__((packed));
 
 struct e820entry {

@@ -15,7 +15,8 @@ OBJS = \
 	regs.o \
 	memory.o \
 	printf.o \
-	a20.o
+	a20.o \
+	disk.o
 
 image: bootloader.bin
 	dd if=/dev/zero of=image bs=512c count=16

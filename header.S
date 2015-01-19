@@ -12,11 +12,9 @@ kernel_size:
 load_address:
 	.long	0x00000000	/* kernel load addr */
 drive_number:
-	.byte	0x00		/* boot drive number */
+	.long	0x00000000	/* boot drive number */
 setup_sectors:
-	.byte	0x06		/* bootloader size in 512 byte blocks */
-_padding:
-	.short	0x0000
+	.long	0x00000008	/* bootloader size in 512 byte blocks */
 
 	.align 4
 big_real_mode_gdt:
@@ -36,8 +34,9 @@ real_start:
 	movw	%ax, %ss
 	movl	%eax, %esp
 
-	movb	%dl, drive_number
-	movb	setup_sectors, %al
+	movzbl	%dl, %eax
+	movl	%eax, drive_number
+	movl	setup_sectors, %eax
 	dec	%al
 
 	/*
