@@ -1,6 +1,8 @@
 #include "boot.h"
 #include "disk.h"
+#include "gdt.h"
 #include "console.h"
+#include "pm.h"
 
 static struct boot_params params __attribute__((aligned(16)));
 
@@ -27,4 +29,6 @@ void setup(struct boot_header *header)
 	e820_show(&params);
 	enable_a20();
 	load_kernel(&params.boot_header);
+	setup_boot_gdt();
+	enter_pm(params.boot_header.image_addr, &params);
 }

@@ -75,8 +75,9 @@ enter_big_real_mode:
 	pushw	%fs
 
 	lgdt	big_real_mode_gdt_descr
+
 	movl	%cr0, %eax
-	orl	$0x01, %eax
+	orb	$0x01, %al
 	movl	%eax, %cr0
 	jmp	1f
 1:
@@ -87,7 +88,7 @@ enter_big_real_mode:
 	movw	%ax, %fs
 
 	movl	%cr0, %eax
-	andl	$0xFE, %eax
+	andb	$0xFE, %al
 	movl	%eax, %cr0
 
 	popw	%fs

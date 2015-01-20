@@ -2,6 +2,7 @@ LD ?= ld
 CC ?= gcc
 
 CFLAGS = -Wall -g -ffreestanding -Os -march=i386 -m16
+AFLAGS = -Wall -g -ffreestanding -march=i386 -m16
 
 all: bootloader.bin
 
@@ -16,7 +17,9 @@ OBJS = \
 	memory.o \
 	printf.o \
 	a20.o \
-	disk.o
+	disk.o \
+	gdt.o \
+	pm.o
 
 image: bootloader.bin
 	dd if=/dev/zero of=image bs=512c count=16
@@ -26,7 +29,7 @@ bootloader.bin: $(OBJS) boot.ld
 	$(LD) --oformat binary -T boot.ld $(OBJS) -o bootloader.bin
 
 %.o: %.S
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(AFLAGS) -c $< -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
